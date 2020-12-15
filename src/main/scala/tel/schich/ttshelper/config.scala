@@ -1,3 +1,5 @@
+package tel.schich.ttshelper
+
 import com.google.cloud.texttospeech.v1._
 import net.jcazevedo.moultingyaml._
 

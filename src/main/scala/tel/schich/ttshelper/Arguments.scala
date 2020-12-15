@@ -1,3 +1,5 @@
+package tel.schich.ttshelper
+
 import scopt.{OptionParser, Read}
 
 import java.nio.file.{Path, Paths}

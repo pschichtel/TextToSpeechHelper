@@ -9,3 +9,5 @@ libraryDependencies ++= Seq(
   "net.jcazevedo" %% "moultingyaml" % "0.4.2",
   "com.github.scopt" %% "scopt" % "4.0.0-RC2",
 )
+
+mainClass := Some("tel.schich.ttshelper.Main")
