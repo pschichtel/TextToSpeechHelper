@@ -1,52 +1,90 @@
 templates:
-  normal: &normal
-    input: >-
-      <speak>
-        Guten Tag! Sie sind mit dem Sanitätshaus Schichtel in {{name}} verbunden.
-        Leider rufen Sie außerhalb unserer Geschäftszeiten an.
-        Diese sind von Montag bis Freitag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as>
-        und von <say-as interpret-as="time">14:00</say-as> bis <say-as interpret-as="time">18:00</say-as>.
-        Mittwochs ist durchgehend von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">15:00</say-as> geöffnet.
-        An Wochenenden haben wir <emphasis level="moderate">nicht</emphasis> geöffnet.
-        In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>,
-        ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.
-      </speak>
-    gender: female
-    language: de-DE
-    voice: de-DE-Standard-A
-    encoding: mp3
-  christmas: &christmas
-    input: >-
-      <speak>
-        Guten Tag! Sie sind mit dem Sanitätshaus Schichtel verbunden.
-        Leider rufen Sie außerhalb unserer Geschäftszeiten an.
-        Diese sind vom <say-as interpret-as="date" format="mm-dd" detail="1">12-23</say-as> bis einschließlich zum <say-as interpret-as="date" format="mm-dd" detail="1">12-31</say-as> in allen Filialen
-        werktags von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as>.
-        <break strength="strong" />
-        In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>,
-        ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.
-      </speak>
+  voice-defaults: &voice-defaults
     gender: female
     language: de-DE
     voice: de-DE-Standard-A
     encoding: mp3
 
+  normal: &normal
+    <<: *voice-defaults
+    input: >-
+      <speak>
+        <p>
+          <s>Guten Tag!</s>
+          <s>Sie sind mit dem Sanitätshaus Schichtel in {{name}} verbunden.</s>
+          <s>Leider rufen Sie außerhalb unserer Geschäftszeiten an.</s>
+          {{opening-hours}}
+          <s>An Wochenenden haben wir nicht geöffnet.</s>
+        </p>
+        <p>
+          <s>In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>, ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.</s>
+        </p>
+      </speak>
+  christmas: &christmas
+    <<: *voice-defaults
+    input: >-
+      <speak>
+        <p>
+          <s>Guten Tag!</s>
+          <s>Sie sind mit dem Sanitätshaus Schichtel verbunden.</s>
+          <s>Leider rufen Sie außerhalb unserer Geschäftszeiten an.</s>
+          <s>
+            Diese sind vom <say-as interpret-as="date" format="mm-dd" detail="1">12-23</say-as> bis einschließlich zum <say-as interpret-as="date" format="mm-dd" detail="1">12-31</say-as> in allen Filialen werktags von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as>.
+          </s>
+        </p>
+        <p>
+          <s>
+            In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>, ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.
+          </s>
+        </p>
+      </speak>
+  rosenmontag: &fastnacht
+    <<: *voice-defaults
+    input: >-
+      <speak>
+        <p>
+          <s>Guten Tag!</s>
+          <s>Sie sind mit dem Sanitätshaus Schichtel verbunden.</s>
+          <s>Leider rufen Sie außerhalb unserer Geschäftszeiten an.</s>
+          <s>Diese sind am Weiberdonnerstag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">15:00</say-as>.</s>
+          <s>An Rosenmontag und Fastnachtsdienstag haben wir nicht geöffnet.</s>
+        </p>
+        <p>
+          <s>
+            In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>, ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.
+          </s>
+        </p>
+      </speak>
+
 texts:
   'Weihnachten':
     <<: *christmas
+  'Fastnacht':
+    <<: *fastnacht
   'Piesport':
     <<: *normal
     variables:
       name: Pis port
+      opening-hours: &piesport-opening-ours >-
+        <s>Diese sind von Montag bis Freitag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as> und von <say-as interpret-as="time">14:00</say-as> bis <say-as interpret-as="time">18:00</say-as>.</s>
+        <s>Mittwochs ist durchgehend von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">15:00</say-as> geöffnet.</s>
+
   'Bernkastel-Kues':
     <<: *normal
     variables:
       name: Bernkastel Kuuhs
+      opening-hours: *piesport-opening-ours
   'Morbach':
     <<: *normal
     variables:
       name: Morbach
+      opening-hours: >-
+        <s>Diese sind von Montag bis Freitag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as>.</s>
+        <s>Montags und Freitags haben wir zusätzlich von <say-as interpret-as="time">14:00</say-as> bis <say-as interpret-as="time">18:00</say-as> geöffnet.</s>
   'Thalfang':
     <<: *normal
     variables:
       name: Thalfang
+      opening-hours: >-
+        <s>Diese sind von Montag bis Freitag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as>.</s>
+        <s>Dienstags und Donnerstags haben wir zusätzlich von <say-as interpret-as="time">14:00</say-as> bis <say-as interpret-as="time">18:00</say-as> geöffnet.</s>
