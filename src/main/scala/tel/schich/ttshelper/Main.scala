@@ -20,22 +20,23 @@ object Main {
 
         val client = TextToSpeechClient.create()
 
-        arguments.only match {
-          case Some(specName) =>
-            config.texts.get(specName) match {
-              case Some(spec) =>
-                synthesize(client, specName, spec, arguments.outputDirectory)
-              case None =>
-                System.err.println(s"There is not synthesis spec named '$specName'!'")
-                System.exit(1)
-            }
-          case None =>
-            for ((name, synthesis) <- config.texts) {
-              synthesize(client, name, synthesis, arguments.outputDirectory)
-            }
+        val specs =
+          if (arguments.specs.nonEmpty) arguments.specs
+          else config.texts.keySet
+
+        val unknownSpecs = specs.diff(config.texts.keySet)
+
+        if (unknownSpecs.nonEmpty) {
+          System.err.println(s"Cannot render unknown specs: ${unknownSpecs.mkString(", ")}")
+          System.exit(1)
+        }
+
+        for (specName <- specs) {
+          synthesize(client, specName, config.texts(specName), arguments.outputDirectory)
         }
 
       case None =>
+        System.exit(1)
     }
   }
 
@@ -51,7 +52,7 @@ object Main {
     }
 
     val outputPath = outputDirectory.resolve(fileName)
-    println(s"Synthesized spec '$name' to '$outputPath''")
+    println(s"Synthesized spec '$name' to '$outputPath'")
 
     Files.write(outputPath, response.getAudioContent.toByteArray, WRITE, CREATE, SYNC, DSYNC, TRUNCATE_EXISTING)
   }
