@@ -1,6 +1,7 @@
 package tel.schich.ttshelper
 
 import com.google.cloud.texttospeech.v1._
+import net.jcazevedo.moultingyaml._
 
 import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.StandardOpenOption.{CREATE, DSYNC, SYNC, WRITE}
