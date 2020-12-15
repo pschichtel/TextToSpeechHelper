@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Main" type="Application" factoryName="Application">
+    <envs>
+      <env name="GOOGLE_APPLICATION_CREDENTIALS" value="./gcloud-credentials.json" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="Main" />
+    <module name="TextToSpeechHelper" />
+    <option name="PROGRAM_PARAMETERS" value="config.yml" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

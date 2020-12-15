@@ -1,0 +1,8 @@
+.bsp/
+.idea/
+target/
+*.iml
+*.json
+*.mp3
+*.wav
+*.opus
