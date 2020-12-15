@@ -4,7 +4,7 @@ import com.google.cloud.texttospeech.v1._
 import net.jcazevedo.moultingyaml._
 
 import java.nio.charset.StandardCharsets.UTF_8
-import java.nio.file.StandardOpenOption.{CREATE, DSYNC, SYNC, WRITE}
+import java.nio.file.StandardOpenOption.{CREATE, DSYNC, SYNC, TRUNCATE_EXISTING, WRITE}
 import java.nio.file.{Files, Path}
 import java.util.Locale
 import java.util.regex.Pattern
@@ -53,7 +53,7 @@ object Main {
     val outputPath = outputDirectory.resolve(fileName)
     println(s"Synthesized spec '$name' to '$outputPath''")
 
-    Files.write(outputPath, response.getAudioContent.toByteArray, WRITE, CREATE, SYNC, DSYNC)
+    Files.write(outputPath, response.getAudioContent.toByteArray, WRITE, CREATE, SYNC, DSYNC, TRUNCATE_EXISTING)
   }
 
   private def buildRequest(input: Input, language: Locale, voice: String, gender: SsmlVoiceGender, encoding: AudioEncoding, variables: Map[String, String]): SynthesizeSpeechRequest = {
