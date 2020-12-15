@@ -1,5 +1,6 @@
 package tel.schich.ttshelper
 
+import com.google.api.gax.rpc.ApiException
 import com.google.cloud.texttospeech.v1._
 import net.jcazevedo.moultingyaml._
 
@@ -40,21 +41,28 @@ object Main {
     }
   }
 
-  private def synthesize(client: TextToSpeechClient, name: String, config: SynthesisSpec, outputDirectory: Path): Path = {
-    val request = buildRequest(config.input, config.language, config.voice, config.gender, config.encoding, config.variables.getOrElse(Map.empty))
-    val response = client.synthesizeSpeech(request)
+  private def synthesize(client: TextToSpeechClient, name: String, config: SynthesisSpec, outputDirectory: Path): Either[Throwable, Path] = {
+    try {
+      val request = buildRequest(config.input, config.language, config.voice, config.gender, config.encoding, config.variables.getOrElse(Map.empty))
+      val response = client.synthesizeSpeech(request)
 
-    val fileName = config.encoding match {
-      case AudioEncoding.LINEAR16 => s"$name.wav"
-      case AudioEncoding.MP3 => s"$name.mp3"
-      case AudioEncoding.OGG_OPUS => s"$name.opus"
-      case _ => throw new Exception("unsupported audio encoding!")
+      val fileName = config.encoding match {
+        case AudioEncoding.LINEAR16 => s"$name.wav"
+        case AudioEncoding.MP3 => s"$name.mp3"
+        case AudioEncoding.OGG_OPUS => s"$name.opus"
+        case _ => throw new Exception("unsupported audio encoding!")
+      }
+
+      val outputPath = outputDirectory.resolve(fileName)
+      println(s"Synthesized spec '$name' to '$outputPath'")
+
+      Right(Files.write(outputPath, response.getAudioContent.toByteArray, WRITE, CREATE, SYNC, DSYNC, TRUNCATE_EXISTING))
+    } catch {
+      case e: ApiException =>
+        System.err.println("Synthesis failed!")
+        e.printStackTrace(System.err)
+        Left(e)
     }
-
-    val outputPath = outputDirectory.resolve(fileName)
-    println(s"Synthesized spec '$name' to '$outputPath'")
-
-    Files.write(outputPath, response.getAudioContent.toByteArray, WRITE, CREATE, SYNC, DSYNC, TRUNCATE_EXISTING)
   }
 
   private def buildRequest(input: Input, language: Locale, voice: String, gender: SsmlVoiceGender, encoding: AudioEncoding, variables: Map[String, String]): SynthesizeSpeechRequest = {
