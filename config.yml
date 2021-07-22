@@ -1,3 +1,9 @@
+names:
+  piesport: &piesport 'Pis port'
+  bks: &bks 'Bernkastel Kuuhs'
+  morbach: &morbach 'Morbach'
+  thalfang: &thalfang 'Thalfang'
+
 templates:
   voice-defaults: &voice-defaults
     gender: female
@@ -5,7 +11,7 @@ templates:
     voice: de-DE-Standard-A
     encoding: mp3
 
-  normal: &normal
+  normal: &closed
     <<: *voice-defaults
     input: >-
       <speak>
@@ -18,6 +24,16 @@ templates:
         </p>
         <p>
           <s>In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>, ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.</s>
+        </p>
+      </speak>
+  busy: &busy
+    <<: *voice-defaults
+    input: >-
+      <speak>
+        <p>
+          <s>Hallo und herzlich Willkommen beim Sanitätshaus Schichtel in {{name}}.</s>
+          <s>Im Augenblick sind alle Leitungen belegt.</s>
+          <s>Gerne können Sie uns jetzt nach dem Signalton eine Nachricht hinterlassen, wir rufen Sie dann schnellstmöglich zurück!</s>
         </p>
       </speak>
   christmas: &christmas
@@ -61,30 +77,47 @@ texts:
     <<: *christmas
   'Fastnacht':
     <<: *fastnacht
-  'Piesport':
-    <<: *normal
+  'Piesport-geschlossen':
+    <<: *closed
     variables:
-      name: Pis port
+      name: *piesport
       opening-hours: &piesport-opening-ours >-
         <s>Diese sind von Montag bis Freitag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as> und von <say-as interpret-as="time">14:00</say-as> bis <say-as interpret-as="time">18:00</say-as>.</s>
         <s>Mittwochs ist durchgehend von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">15:00</say-as> geöffnet.</s>
 
-  'Bernkastel-Kues':
-    <<: *normal
+  'Bernkastel-Kues-geschlossen':
+    <<: *closed
     variables:
-      name: Bernkastel Kuuhs
+      name: *bks
       opening-hours: *piesport-opening-ours
-  'Morbach':
-    <<: *normal
+  'Morbach-geschlossen':
+    <<: *closed
     variables:
-      name: Morbach
+      name: *morbach
       opening-hours: >-
         <s>Diese sind von Montag bis Freitag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as>.</s>
         <s>Montags und Freitags haben wir zusätzlich von <say-as interpret-as="time">14:00</say-as> bis <say-as interpret-as="time">18:00</say-as> geöffnet.</s>
-  'Thalfang':
-    <<: *normal
+  'Thalfang-geschlossen':
+    <<: *closed
     variables:
-      name: Thalfang
+      name: *thalfang
       opening-hours: >-
         <s>Diese sind von Montag bis Freitag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as>.</s>
         <s>Dienstags und Donnerstags haben wir zusätzlich von <say-as interpret-as="time">14:00</say-as> bis <say-as interpret-as="time">18:00</say-as> geöffnet.</s>
+  'Piesport-beschäftigt':
+    <<: *busy
+    variables:
+      name: *piesport
+
+  'Bernkastel-Kues-beschäftigt':
+    <<: *busy
+    variables:
+      name: *bks
+  'Morbach-beschäftigt':
+    <<: *busy
+    variables:
+      name: *morbach
+  'Thalfang-beschäftigt':
+    <<: *busy
+    variables:
+      name: *thalfang
