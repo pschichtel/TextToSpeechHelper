@@ -8,7 +8,7 @@ templates:
   voice-defaults: &voice-defaults
     gender: female
     language: de-DE
-    voice: de-DE-Standard-A
+    voice: de-DE-Wavenet-C
     encoding: mp3
 
   normal: &closed
@@ -71,6 +71,22 @@ templates:
           </s>
         </p>
       </speak>
+  krankheit-geschlossen: &krankheit-geschlossen
+    <<: *voice-defaults
+    input: >-
+      <speak>
+        <p>
+          <s>Guten Tag!</s>
+          <s>Sie sind mit dem Sanitätshaus Schichtel verbunden.</s>
+          <s>Wegen mehreren Krankheitsfällen ist unsere Filiale {{name}} bis auf weiteres nur Vormittags geöffnet.</s> 
+          <s>Wir bitten um ihr Verständnis.</s>
+        </p>
+        <p>
+          <s>
+            In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>, ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.
+          </s>
+        </p>
+      </speak>
 
 texts:
   'Weihnachten':
@@ -119,5 +135,14 @@ texts:
       name: *morbach
   'Thalfang-beschäftigt':
     <<: *busy
+    variables:
+      name: *thalfang
+
+  'Morbach-nur-vormittags':
+    <<: *krankheit-geschlossen
+    variables:
+      name: *morbach
+  'Thalfang-nur-vormittags':
+    <<: *krankheit-geschlossen
     variables:
       name: *thalfang
