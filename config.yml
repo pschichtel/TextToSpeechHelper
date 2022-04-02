@@ -4,6 +4,15 @@ names:
   morbach: &morbach 'Morbach'
   thalfang: &thalfang 'Thalfang'
 
+snippets:
+  notfall: &notfall >-
+    <p>
+      <s>In dringenden Notfällen erreichen sie den Notdienst unter <prosody rate="80%"><say-as interpret-as="verbatim">0173</say-as><break time="500ms" strength="x-weak"/><say-as interpret-as="verbatim">30</say-as><break time="500ms"/><say-as interpret-as="verbatim">11</say-as><break time="500ms"/><say-as interpret-as="verbatim">555</say-as></prosody>.</s>
+      <s>Ich wiederhole:<break time="1s" strength="x-weak"/> <prosody rate="80%"><say-as interpret-as="verbatim">0173</say-as><break time="500ms" strength="x-weak"/><say-as interpret-as="verbatim">30</say-as><break time="500ms"/><say-as interpret-as="verbatim">11</say-as><break time="500ms"/><say-as interpret-as="verbatim">555</say-as></prosody>.</s>
+      <s>Ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.</s>
+    </p>
+    
+
 templates:
   voice-defaults: &voice-defaults
     gender: female
@@ -22,9 +31,7 @@ templates:
           {{opening-hours}}
           <s>An Wochenenden haben wir nicht geöffnet.</s>
         </p>
-        <p>
-          <s>In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>, ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.</s>
-        </p>
+        {{notfall}}
       </speak>
   busy: &busy
     <<: *voice-defaults
@@ -48,11 +55,7 @@ templates:
             Diese sind vom <say-as interpret-as="date" format="mm-dd" detail="1">12-23</say-as> bis einschließlich zum <say-as interpret-as="date" format="mm-dd" detail="1">12-31</say-as> in allen Filialen werktags von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as>.
           </s>
         </p>
-        <p>
-          <s>
-            In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>, ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.
-          </s>
-        </p>
+        {{notfall}}
       </speak>
   rosenmontag: &fastnacht
     <<: *voice-defaults
@@ -65,11 +68,7 @@ templates:
           <s>Diese sind am Weiberdonnerstag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">15:00</say-as>.</s>
           <s>An Rosenmontag und Fastnachtsdienstag haben wir nicht geöffnet.</s>
         </p>
-        <p>
-          <s>
-            In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>, ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.
-          </s>
-        </p>
+        {{notfall}}
       </speak>
   krankheit-geschlossen: &krankheit-geschlossen
     <<: *voice-defaults
@@ -81,22 +80,23 @@ templates:
           <s>Wegen mehreren Krankheitsfällen ist unsere Filiale {{name}} bis auf weiteres nur Vormittags geöffnet.</s> 
           <s>Wir bitten um ihr Verständnis.</s>
         </p>
-        <p>
-          <s>
-            In dringenden Notfällen erreichen sie den Notdienst unter <say-as interpret-as="telephone">0173 30 11 555</say-as>, ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.
-          </s>
-        </p>
+        {{notfall}}
       </speak>
 
 texts:
   'Weihnachten':
     <<: *christmas
+    variables:
+      notfall: *notfall
   'Fastnacht':
     <<: *fastnacht
+    variables:
+      notfall: *notfall
   'Piesport-geschlossen':
     <<: *closed
     variables:
       name: *piesport
+      notfall: *notfall
       opening-hours: &piesport-opening-ours >-
         <s>Diese sind von Montag bis Freitag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as> und von <say-as interpret-as="time">14:00</say-as> bis <say-as interpret-as="time">18:00</say-as>.</s>
         <s>Mittwochs ist durchgehend von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">15:00</say-as> geöffnet.</s>
@@ -105,11 +105,13 @@ texts:
     <<: *closed
     variables:
       name: *bks
+      notfall: *notfall
       opening-hours: *piesport-opening-ours
   'Morbach-geschlossen':
     <<: *closed
     variables:
       name: *morbach
+      notfall: *notfall
       opening-hours: >-
         <s>Diese sind von Montag bis Freitag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as>.</s>
         <s>Montags und Freitags haben wir zusätzlich von <say-as interpret-as="time">14:00</say-as> bis <say-as interpret-as="time">18:00</say-as> geöffnet.</s>
@@ -117,6 +119,7 @@ texts:
     <<: *closed
     variables:
       name: *thalfang
+      notfall: *notfall
       opening-hours: >-
         <s>Diese sind von Montag bis Freitag von <say-as interpret-as="time">09:00</say-as> bis <say-as interpret-as="time">13:00</say-as>.</s>
         <s>Dienstags und Donnerstags haben wir zusätzlich von <say-as interpret-as="time">14:00</say-as> bis <say-as interpret-as="time">18:00</say-as> geöffnet.</s>
@@ -142,7 +145,9 @@ texts:
     <<: *krankheit-geschlossen
     variables:
       name: *morbach
+      notfall: *notfall
   'Thalfang-nur-vormittags':
     <<: *krankheit-geschlossen
     variables:
       name: *thalfang
+      notfall: *notfall
