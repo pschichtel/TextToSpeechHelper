@@ -1,23 +1,25 @@
 package tel.schich.ttshelper
 
 import com.google.api.gax.rpc.ApiException
-import com.google.cloud.texttospeech.v1._
-import net.jcazevedo.moultingyaml._
+import com.google.cloud.texttospeech.v1.*
 
 import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.StandardOpenOption.{CREATE, DSYNC, SYNC, TRUNCATE_EXISTING, WRITE}
 import java.nio.file.{Files, Path}
 import java.util.Locale
 import java.util.regex.Pattern
+import io.circe.yaml.parser
 
 object Main {
 
   def main(args: Array[String]): Unit = {
-
     Arguments.parse(args) match {
       case Some(arguments) =>
         val configString = new String(Files.readAllBytes(arguments.config), UTF_8)
-        val config = configString.parseYaml.convertTo[Config]
+        val config = parser.parse(configString)
+          .flatMap(json => json.as[Config])
+          .toTry
+          .get
 
         val client = TextToSpeechClient.create()
 

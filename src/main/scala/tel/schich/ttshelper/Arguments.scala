@@ -3,6 +3,7 @@ package tel.schich.ttshelper
 import scopt.{OptionParser, Read}
 
 import java.nio.file.{Path, Paths}
+import scala.collection.immutable.ArraySeq
 
 case class Arguments(config: Path, specs: Set[String], outputDirectory: Path)
 
@@ -24,5 +25,6 @@ object Arguments {
     }
   }
 
-  def parse(args: Seq[String]): Option[Arguments] = parser.parse(args, Arguments(null, Set.empty, Paths.get(".")))
+  def parse(args: Array[String]): Option[Arguments] =
+    parser.parse(ArraySeq.unsafeWrapArray(args), Arguments(null, Set.empty, Paths.get(".")))
 }
