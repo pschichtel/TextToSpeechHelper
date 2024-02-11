@@ -14,7 +14,7 @@ sealed trait Input
 final case class Text(text: String) extends Input
 final case class Ssml(ssml: String) extends Input
 
-given Configuration = Configuration.default.withSnakeCaseMemberNames
+given Configuration = Configuration.default.withDefaults
 
 abstract class SimpleStringBackedCodec[T](private val encode: T => String, private val decode: String => T) extends Codec[T] {
   override def apply(obj: T): Json = encode(obj).asJson
@@ -48,4 +48,10 @@ implicit object InputFormatCodec extends Codec[Input] {
 }
 
 case class Config(texts: Map[String, SynthesisSpec]) derives ConfiguredCodec
-case class SynthesisSpec(input: Input, gender: SsmlVoiceGender, language: Locale, voice: String, encoding: AudioEncoding, variables: Option[Map[String, String]]) derives ConfiguredCodec
+case class SynthesisSpec(input: Input,
+                         gender: SsmlVoiceGender,
+                         language: Locale,
+                         voice: String,
+                         encoding: AudioEncoding,
+                         speakingRate: Double = 1.0,
+                         variables: Option[Map[String, String]]) derives ConfiguredCodec

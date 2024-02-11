@@ -45,7 +45,7 @@ object Main {
 
   private def synthesize(client: TextToSpeechClient, name: String, config: SynthesisSpec, outputDirectory: Path): Either[Throwable, Path] = {
     try {
-      val request = buildRequest(config.input, config.language, config.voice, config.gender, config.encoding, config.variables.getOrElse(Map.empty))
+      val request = buildRequest(config.input, config.language, config.voice, config.gender, config.encoding, config.speakingRate, config.variables.getOrElse(Map.empty))
       val response = client.synthesizeSpeech(request)
 
       val fileName = config.encoding match {
@@ -67,12 +67,12 @@ object Main {
     }
   }
 
-  private def buildRequest(input: Input, language: Locale, voice: String, gender: SsmlVoiceGender, encoding: AudioEncoding, variables: Map[String, String]): SynthesizeSpeechRequest = {
+  private def buildRequest(input: Input, language: Locale, voice: String, gender: SsmlVoiceGender, encoding: AudioEncoding, speakingRate: Double, variables: Map[String, String]): SynthesizeSpeechRequest = {
     val builder = SynthesizeSpeechRequest.newBuilder()
 
     builder.setInput(buildInput(input, variables))
     builder.setVoice(buildVoice(language, voice, gender))
-    builder.setAudioConfig(buildConfig(encoding))
+    builder.setAudioConfig(buildConfig(encoding, speakingRate))
 
     builder.build()
   }
@@ -104,9 +104,10 @@ object Main {
     builder.build()
   }
 
-  private def buildConfig(encoding: AudioEncoding): AudioConfig = {
+  private def buildConfig(encoding: AudioEncoding, speakingRate: Double): AudioConfig = {
     val builder = AudioConfig.newBuilder()
     builder.setAudioEncoding(encoding)
+    builder.setSpeakingRate(speakingRate)
     builder.build()
   }
 
