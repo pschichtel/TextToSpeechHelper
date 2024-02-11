@@ -1,5 +1,5 @@
 names:
-  piesport: &piesport 'Pis port'
+  piesport: &piesport 'Pießport'
   bks: &bks 'Bernkastel Kuuhs'
   morbach: &morbach 'Morbach'
   thalfang: &thalfang 'Thalfang'
@@ -7,8 +7,8 @@ names:
 snippets:
   notfall: &notfall >-
     <p>
-      <s>In dringenden Notfällen erreichen sie den Notdienst unter <prosody rate="80%"><say-as interpret-as="verbatim">0173</say-as><break time="500ms" strength="x-weak"/><say-as interpret-as="verbatim">30</say-as><break time="500ms"/><say-as interpret-as="verbatim">11</say-as><break time="500ms"/><say-as interpret-as="verbatim">555</say-as></prosody>.</s>
-      <s>Ich wiederhole:<break time="1s" strength="x-weak"/> <prosody rate="80%"><say-as interpret-as="verbatim">0173</say-as><break time="500ms" strength="x-weak"/><say-as interpret-as="verbatim">30</say-as><break time="500ms"/><say-as interpret-as="verbatim">11</say-as><break time="500ms"/><say-as interpret-as="verbatim">555</say-as></prosody>.</s>
+      <s>In dringenden Notfällen erreichen sie den Notdienst unter <prosody rate="80%"><say-as interpret-as="verbatim">0173</say-as><break time="500ms" strength="x-weak"/><say-as interpret-as="verbatim">10</say-as><break time="500ms"/><say-as interpret-as="verbatim">52</say-as><break time="500ms"/><say-as interpret-as="verbatim">444</say-as></prosody>.</s>
+      <s>Ich wiederhole:<break time="1s" strength="x-weak"/> <prosody><say-as interpret-as="verbatim">0173</say-as><break time="500ms" strength="x-weak"/><say-as interpret-as="verbatim">10</say-as><break time="500ms"/><say-as interpret-as="verbatim">52</say-as><break time="500ms"/><say-as interpret-as="verbatim">444</say-as></prosody>.</s>
       <s>Ansonsten können sie nach dem Signalton eine Nachricht hinterlassen, wir rufen sie schnellst möglich zurück.</s>
     </p>
     
@@ -17,7 +17,9 @@ templates:
   voice-defaults: &voice-defaults
     gender: female
     language: de-DE
-    voice: de-DE-Wavenet-C
+    #voice: de-DE-Studio-C
+    voice: de-DE-Neural2-F
+    speakingRate: 0.8
     encoding: mp3
 
   normal: &closed
