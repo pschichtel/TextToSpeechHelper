@@ -2,7 +2,7 @@ name := "TextToSpeechHelper"
 
 version := "0.1"
 
-scalaVersion := "3.3.1"
+scalaVersion := "3.6.1"
 
 libraryDependencies ++= Seq(
   "com.google.cloud" % "google-cloud-texttospeech" % "2.18.0",
